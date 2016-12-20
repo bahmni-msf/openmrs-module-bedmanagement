@@ -1,6 +1,8 @@
 package org.openmrs.module.bedmanagement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import java.util.Set;
+
 @JsonIgnoreProperties({"patient"})
 public class BedLayout {
     private Integer rowNumber;
@@ -10,6 +12,7 @@ public class BedLayout {
     private String status;
     private BedType bedType;
     private String location;
+    private Set<String> tags;
 
     public String getBedNumber() {
         return bedNumber;
@@ -65,6 +68,14 @@ public class BedLayout {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 
     @Override

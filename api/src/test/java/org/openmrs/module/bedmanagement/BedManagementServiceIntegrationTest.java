@@ -39,7 +39,7 @@ public class BedManagementServiceIntegrationTest extends BaseModuleContextSensit
         Assert.assertEquals(1, cardioWard.getOccupiedBeds());
 
         AdmissionLocation orthoWard = getWard(admissionLocationList, "Orthopaedic ward");
-        Assert.assertEquals(4, orthoWard.getTotalBeds());
+        Assert.assertEquals(6, orthoWard.getTotalBeds());
         Assert.assertEquals(2, orthoWard.getOccupiedBeds());
     }
 
