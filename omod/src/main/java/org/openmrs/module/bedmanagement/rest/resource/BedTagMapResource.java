@@ -13,44 +13,33 @@
  */
 package org.openmrs.module.bedmanagement.rest.resource;
 
-import org.openmrs.Encounter;
-import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.bedmanagement.Bed;
-import org.openmrs.module.bedmanagement.BedDetails;
-import org.openmrs.module.bedmanagement.BedManagementService;
 import org.openmrs.module.bedmanagement.BedTag;
 import org.openmrs.module.bedmanagement.BedTagMap;
 import org.openmrs.module.bedmanagement.BedTagMapService;
 import org.openmrs.module.webservices.rest.SimpleObject;
-import org.openmrs.module.webservices.rest.web.ConversionUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
-import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
-
-import java.util.Arrays;
 
 @Resource(name = RestConstants.VERSION_1 + "/bedTagMap", supportedClass = BedTagMap.class, supportedOpenmrsVersions = {"1.9.*", "1.10.*", "1.11.*", "1.12.*"})
 public class BedTagMapResource extends DelegatingCrudResource {
 
     @Override
     public BedTagMap getByUniqueId(String uniqueId) {
-        return null;
+        BedTagMapService bedTagMapService = Context.getService(BedTagMapService.class);
+        return bedTagMapService.getBedTagMapByUuid(uniqueId);
     }
 
     @Override
     protected void delete(Object delegate, String reason, RequestContext context) throws ResponseException {
-
+        BedTagMapService bedTagMapService = Context.getService(BedTagMapService.class);
+        bedTagMapService.delete((BedTagMap) delegate, reason);
     }
 
     @Override
@@ -74,7 +63,7 @@ public class BedTagMapResource extends DelegatingCrudResource {
     }
 
     @Override
-    public BedTagMap create(SimpleObject propertiesToCreate, RequestContext requestContext) {
+    public BedTagMap create(SimpleObject propertiesToCreate, RequestContext requestContext) throws ResponseException {
         BedTagMapService bedTagMapService = Context.getService(BedTagMapService.class);
         Bed bed = bedTagMapService.getBedByUuid((String) propertiesToCreate.get("bed_uuid"));
         BedTag bedTag = bedTagMapService.getBedTagByUuid((String) propertiesToCreate.get("bed_tag_uuid"));

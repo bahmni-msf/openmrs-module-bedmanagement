@@ -16,9 +16,6 @@ package org.openmrs.module.bedmanagement;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class HibernateBedTagMapDAO implements BedTagMapDAO {
     SessionFactory sessionFactory;
@@ -28,19 +25,36 @@ public class HibernateBedTagMapDAO implements BedTagMapDAO {
     }
 
     @Override
-    public BedTagMap assignTagToBed(Bed bed, BedTag bedTag) {
-        Session session = sessionFactory.getCurrentSession();
-        BedTagMap bedTagMap = new BedTagMap();
-        bedTagMap.setBed(bed);
-        bedTagMap.setBedTag(bedTag);
+    public BedTagMap saveOrUpdate(BedTagMap bedTagMap) {
+        Session session = this.sessionFactory.getCurrentSession();
         session.saveOrUpdate(bedTagMap);
+        session.flush();
         return bedTagMap;
     }
 
     @Override
-    public BedTag getBedTagByUuid(String bed_tag_uuid) {
+    public BedTagMap getBedTagMapByUuid(String bedTagMapUuid) {
+        return (BedTagMap) sessionFactory.getCurrentSession()
+                .createQuery("from BedTagMap where uuid = :uuid and voided =:voided")
+                .setParameter("uuid", bedTagMapUuid)
+                .setParameter("voided", false)
+                .uniqueResult();
+    }
+
+    @Override
+    public BedTag getBedTagByUuid(String bedTagUuid) {
         return (BedTag) sessionFactory.getCurrentSession()
                 .createQuery("from BedTag where uuid = :uuid")
-                .setParameter("uuid", bed_tag_uuid).uniqueResult();
+                .setParameter("uuid", bedTagUuid).uniqueResult();
+    }
+
+    @Override
+    public BedTagMap getBedTagMapWithBedAndTag(Bed bed, BedTag bedTag) {
+        return (BedTagMap) sessionFactory.getCurrentSession()
+                .createQuery("from BedTagMap where bed = :bed and bedTag = :bedTag and voided =:voided")
+                .setParameter("bed", bed)
+                .setParameter("bedTag", bedTag)
+                .setParameter("voided", false)
+                .uniqueResult();
     }
 }
