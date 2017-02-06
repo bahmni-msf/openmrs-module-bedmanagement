@@ -16,13 +16,18 @@ package org.openmrs.module.bedmanagement.rest.resource;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.bedmanagement.AdmissionLocation;
+import org.openmrs.module.bedmanagement.BedLayout;
 import org.openmrs.module.bedmanagement.BedManagementService;
+import org.openmrs.module.webservices.rest.SimpleObject;
+import org.openmrs.module.webservices.rest.web.ConversionUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.CustomRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
@@ -31,6 +36,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,6 +70,36 @@ public class AdmissionLocationResource extends DelegatingCrudResource<AdmissionL
             return description;
         }
         return null;
+    }
+
+    @PropertyGetter("bedLayouts")
+    public Object getBedLayouts(AdmissionLocation admissionLocation) throws Exception {
+        List<BedLayout> bedLayouts = admissionLocation.getBedLayouts();
+        List<SimpleObject> ret = new ArrayList<SimpleObject>();
+        for (BedLayout bedLayout : bedLayouts) {
+            ret.add(getBedLayout(bedLayout));
+        }
+        return ret;
+    }
+
+    private SimpleObject getBedLayout(BedLayout bedLayout) throws Exception {
+        SimpleObject ret = new SimpleObject();
+        ret.put("rowNumber", bedLayout.getRowNumber());
+        ret.put("columnNumber", bedLayout.getColumnNumber());
+        ret.put("bedNumber", bedLayout.getBedNumber());
+        ret.put("bedId", bedLayout.getBedId());
+        ret.put("status", bedLayout.getStatus());
+        ret.put("bedType", bedLayout.getBedType());
+        ret.put("location", bedLayout.getLocation());
+        ret.put("tags", bedLayout.getTags());
+        ret.put("patient", getCustomRepresentationForPatient(bedLayout));
+        return ret;
+    }
+
+    private Object getCustomRepresentationForPatient(BedLayout bedLayout) {
+        String specification = "(uuid,person:(gender,age,preferredName:(givenName,familyName),preferredAddress:default),identifiers:(identifier))";
+        Representation rep = new CustomRepresentation(specification);
+        return ConversionUtil.convertToRepresentation(bedLayout.getPatient(), rep);
     }
 
     @Override

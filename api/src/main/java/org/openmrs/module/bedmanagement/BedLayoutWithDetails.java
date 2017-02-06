@@ -1,13 +1,8 @@
 package org.openmrs.module.bedmanagement;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@JsonIgnoreProperties({"patient"})
 public class BedLayoutWithDetails {
     private Integer rowNumber;
     private Integer columnNumber;
@@ -60,6 +55,16 @@ public class BedLayoutWithDetails {
             bedTagList.add(bedTagMap.getBedTag().getName());
         }
         bedLayout.setTags(bedTagList);
+        setPatientInfo(bedLayout);
         return bedLayout;
+    }
+
+    private void setPatientInfo(BedLayout bedLayout) {
+        Set<BedPatientAssignment> bedPatientAssignment = this.bed.getBedPatientAssignment();
+        for (BedPatientAssignment patientAssignment : bedPatientAssignment) {
+            if (patientAssignment.getEndDatetime() == null) {
+                bedLayout.setPatient(patientAssignment.getPatient());
+            }
+        }
     }
 }
