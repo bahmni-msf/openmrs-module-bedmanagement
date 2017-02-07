@@ -30,12 +30,6 @@
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>javassist</groupId>
-					<artifactId>javassist</artifactId>
-				</exclusion>
-			</exclusions>
 			<type>jar</type>
 		</dependency>
 		
@@ -48,12 +42,6 @@
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>javassist</groupId>
-					<artifactId>javassist</artifactId>
-				</exclusion>
-			</exclusions>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -74,12 +62,6 @@
 				
 		<!-- End OpenMRS core -->
 
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<type>jar</type>
-			<version>3.20.0-GA</version>
-		</dependency>
         <dependency>
             <groupId>org.ict4h</groupId>
             <artifactId>atomfeed-server</artifactId>
