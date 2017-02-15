@@ -224,4 +224,12 @@ public class HibernateBedManagementDAO implements BedManagementDAO {
                 .uniqueResult();
         return bed;
     }
+
+    @Override
+    public List<BedTag> getAllBedTags() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from BedTag where voided =:voided")
+                .setParameter("voided", false)
+                .list();
+    }
 }

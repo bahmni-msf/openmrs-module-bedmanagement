@@ -110,6 +110,12 @@
     <location_tag_map location_id="12347" location_tag_id="12" />
     <location_tag_map location_id="123452" location_tag_id="12" />
 
+    <bed_tag bed_tag_id="1" name="Broken" creator="1" date_created="2017-02-07 20:01:30" voided="false" uuid="73e846d6-ed5f-11e6-a3c9-0800274a5156"/>
+    <bed_tag bed_tag_id="2" name="Oxygen" creator="1" date_created="2017-02-07 20:01:30" voided="false" uuid="73e846d6-ed5f-22e6-a3c9-0800274a5156"/>
+    <bed_tag bed_tag_id="3" name="Isolation" creator="1" date_created="2017-02-07 20:01:30" voided="false" uuid="73e846d6-ed5f-33e6-a3c9-0800274a5156"/>
+    <bed_tag bed_tag_id="4" name="Sanitation required" creator="1" date_created="2017-02-07 20:01:30" voided="false" uuid="73e846d6-ed5f-44e6-a3c9-0800274a5156"/>
+    <bed_tag bed_tag_id="5" name="Strict Isolation" creator="1" date_created="2017-02-07 20:01:30" voided="true" uuid="73e846d6-ed5f-55e6-a3c9-0800274a5156"/>
+
 </dataset>
 
 
