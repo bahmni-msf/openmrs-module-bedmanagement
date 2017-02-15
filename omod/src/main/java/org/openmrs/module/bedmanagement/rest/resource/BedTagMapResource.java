@@ -14,21 +14,21 @@
 package org.openmrs.module.bedmanagement.rest.resource;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.bedmanagement.Bed;
-import org.openmrs.module.bedmanagement.BedTag;
 import org.openmrs.module.bedmanagement.BedTagMap;
 import org.openmrs.module.bedmanagement.BedTagMapService;
-import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
+import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + "/bedTagMap", supportedClass = BedTagMap.class, supportedOpenmrsVersions = {"1.9.*", "1.10.*", "1.11.*", "1.12.*"})
-public class BedTagMapResource extends DelegatingCrudResource {
+@Resource(name = RestConstants.VERSION_1 + "/bedTagMap", supportedClass = BedTagMap.class, supportedOpenmrsVersions = {"1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*"})
+public class BedTagMapResource extends DataDelegatingCrudResource<BedTagMap> {
 
     @Override
     public BedTagMap getByUniqueId(String uniqueId) {
@@ -37,36 +37,41 @@ public class BedTagMapResource extends DelegatingCrudResource {
     }
 
     @Override
-    protected void delete(Object delegate, String reason, RequestContext context) throws ResponseException {
+    protected void delete(BedTagMap delegate, String reason, RequestContext context) throws ResponseException {
         BedTagMapService bedTagMapService = Context.getService(BedTagMapService.class);
-        bedTagMapService.delete((BedTagMap) delegate, reason);
+        bedTagMapService.delete(delegate, reason);
     }
 
     @Override
-    public Object newDelegate() {
-        return null;
+    public BedTagMap newDelegate() {
+        return new BedTagMap();
     }
 
     @Override
-    public Object save(Object delegate) {
-        return null;
+    public BedTagMap save(BedTagMap delegate) {
+        return Context.getService(BedTagMapService.class).save(delegate);
     }
 
     @Override
-    public void purge(Object delegate, RequestContext context) throws ResponseException {
-
+    public void purge(BedTagMap delegate, RequestContext context) throws ResponseException {
+        throw new ResourceDoesNotSupportOperationException("purge not allowed on bedTagMap resource");
     }
 
     @Override
     public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+        if ((rep instanceof DefaultRepresentation) || (rep instanceof RefRepresentation)) {
+            DelegatingResourceDescription description = new DelegatingResourceDescription();
+            description.addProperty("uuid");
+            return description;
+        }
         return null;
     }
 
     @Override
-    public BedTagMap create(SimpleObject propertiesToCreate, RequestContext requestContext) throws ResponseException {
-        BedTagMapService bedTagMapService = Context.getService(BedTagMapService.class);
-        Bed bed = bedTagMapService.getBedByUuid((String) propertiesToCreate.get("bed_uuid"));
-        BedTag bedTag = bedTagMapService.getBedTagByUuid((String) propertiesToCreate.get("bed_tag_uuid"));
-        return bedTagMapService.save(bed, bedTag);
+    public DelegatingResourceDescription getCreatableProperties() {
+        DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
+        delegatingResourceDescription.addRequiredProperty("bed");
+        delegatingResourceDescription.addRequiredProperty("bedTag");
+        return delegatingResourceDescription;
     }
 }

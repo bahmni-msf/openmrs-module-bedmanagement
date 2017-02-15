@@ -78,16 +78,22 @@ public class BedTagMapServiceImplTest {
 
         Bed bed = new Bed();
         BedTag bedTag = new BedTag();
-        when(bedTagMapDAO.getBedTagMapWithBedAndTag(bed, bedTag)).thenReturn(new BedTagMap());
-        bedTagMapService.save(bed, bedTag);
+        BedTagMap bedTagMap = new BedTagMap();
+        bedTagMap.setBed(bed);
+        bedTagMap.setBedTag(bedTag);
+        when(bedTagMapDAO.getBedTagMapWithBedAndTag(bed, bedTag)).thenReturn(bedTagMap);
+        bedTagMapService.save(bedTagMap);
     }
 
     @Test
     public void shouldAssignGivenBedWithGivenBedTag() throws Exception {
         Bed bed = new Bed();
         BedTag bedTag = new BedTag();
+        BedTagMap bedTagMap = new BedTagMap();
+        bedTagMap.setBed(bed);
+        bedTagMap.setBedTag(bedTag);
         when(bedTagMapDAO.getBedTagMapWithBedAndTag(bed, bedTag)).thenReturn(null);
-        bedTagMapService.save(bed, bedTag);
+        bedTagMapService.save(bedTagMap);
         verify(bedTagMapDAO, times(1)).saveOrUpdate(any(BedTagMap.class));
     }
 

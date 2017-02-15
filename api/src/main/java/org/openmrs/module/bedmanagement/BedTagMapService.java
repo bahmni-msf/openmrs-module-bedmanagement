@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface BedTagMapService extends OpenmrsService{
-    BedTagMap save(Bed bed, BedTag bedTag) throws IllegalPropertyException;
+    BedTagMap save(BedTagMap bedTagMap) throws IllegalPropertyException;
 
     void delete(BedTagMap bedTagMap, String reason);
 

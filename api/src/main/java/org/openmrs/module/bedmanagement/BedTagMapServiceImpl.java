@@ -29,13 +29,10 @@ public class BedTagMapServiceImpl extends BaseOpenmrsService implements BedTagMa
     }
 
     @Override
-    public BedTagMap save(Bed bed, BedTag bedTag) throws IllegalPropertyException {
-        if (getBedTagMapWithBedAndTag(bed, bedTag) != null) {
+    public BedTagMap save(BedTagMap bedTagMap) throws IllegalPropertyException{
+        if (getBedTagMapWithBedAndTag(bedTagMap.getBed(), bedTagMap.getBedTag()) != null) {
             throw new IllegalPropertyException("Tag Already Present For Bed");
         }
-        BedTagMap bedTagMap = new BedTagMap();
-        bedTagMap.setBed(bed);
-        bedTagMap.setBedTag(bedTag);
         return dao.saveOrUpdate(bedTagMap);
     }
 
