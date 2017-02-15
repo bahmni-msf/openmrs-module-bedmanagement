@@ -18,6 +18,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.bedmanagement.AdmissionLocation;
 import org.openmrs.module.bedmanagement.BedLayout;
 import org.openmrs.module.bedmanagement.BedManagementService;
+import org.openmrs.module.bedmanagement.BedTagMap;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.ConversionUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -39,6 +40,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Resource(name = RestConstants.VERSION_1 + "/admissionLocation", supportedClass = AdmissionLocation.class, supportedOpenmrsVersions = {"1.9.*", "1.10.*", "1.11.*", "1.12.*"})
 public class AdmissionLocationResource extends DelegatingCrudResource<AdmissionLocation> {
@@ -91,9 +93,22 @@ public class AdmissionLocationResource extends DelegatingCrudResource<AdmissionL
         ret.put("status", bedLayout.getStatus());
         ret.put("bedType", bedLayout.getBedType());
         ret.put("location", bedLayout.getLocation());
-        ret.put("tags", bedLayout.getTags());
+        ret.put("bedTagMaps", getCustomRepresentationForBedTagMaps(bedLayout));
         ret.put("patient", getCustomRepresentationForPatient(bedLayout));
         return ret;
+    }
+
+    private List<SimpleObject> getCustomRepresentationForBedTagMaps(BedLayout bedLayout) {
+        Set<BedTagMap> bedTagMaps = bedLayout.getBedTagMaps();
+        String specification = "(uuid,bedTag:(name))";
+        Representation rep = new CustomRepresentation(specification);
+        List<SimpleObject> customBedTagMaps = new ArrayList<SimpleObject>();
+        for (BedTagMap bedTagMap : bedTagMaps) {
+            if (!bedTagMap.isVoided()) {
+                customBedTagMaps.add((SimpleObject) ConversionUtil.convertToRepresentation(bedTagMap, rep));
+            }
+        }
+        return customBedTagMaps;
     }
 
     private Object getCustomRepresentationForPatient(BedLayout bedLayout) {

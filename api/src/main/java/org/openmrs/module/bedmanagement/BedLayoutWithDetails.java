@@ -50,11 +50,7 @@ public class BedLayoutWithDetails {
         bedLayout.setBedId(this.bed.getId());
         bedLayout.setStatus(this.bed.getStatus());
         bedLayout.setBedType(this.bed.getBedType());
-        Set<String> bedTagList = new HashSet<>();
-        for(BedTagMap bedTagMap : this.bed.getBedTagMap()) {
-            bedTagList.add(bedTagMap.getBedTag().getName());
-        }
-        bedLayout.setTags(bedTagList);
+        bedLayout.setBedTagMaps(this.bed.getBedTagMap());
         setPatientInfo(bedLayout);
         return bedLayout;
     }

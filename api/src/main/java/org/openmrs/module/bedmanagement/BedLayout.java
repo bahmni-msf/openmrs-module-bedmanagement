@@ -13,7 +13,7 @@ public class BedLayout {
     private BedType bedType;
     private String location;
     private Patient patient;
-    private Set<String> tags;
+    private Set<BedTagMap> bedTagMaps;
 
     public String getBedNumber() {
         return bedNumber;
@@ -71,14 +71,6 @@ public class BedLayout {
         this.location = location;
     }
 
-    public Set<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
-    }
-
     public Patient getPatient() {
         return patient;
     }
@@ -98,5 +90,13 @@ public class BedLayout {
                 ", bedType=" + bedType +
                 ", location='" + location + '\'' +
                 '}';
+    }
+
+    public Set<BedTagMap> getBedTagMaps() {
+        return bedTagMaps;
+    }
+
+    public void setBedTagMaps(Set<BedTagMap> bedTagMaps) {
+        this.bedTagMaps = bedTagMaps;
     }
 }

@@ -7,6 +7,7 @@ import org.openmrs.module.webservices.rest.SimpleObject;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -53,9 +54,13 @@ public class AdmissionLocationResourceTest extends MainResourceControllerTest {
         assertEquals("307-a", occupiedBed.get("bedNumber"));
         assertNotNull(patient);
         assertEquals("2b597be0-83c7-4f1d-b3d2-1d61ab128762", patient.get("uuid"));
+        List<Object> bedTagMapsForOccupiedBed = (List<Object>) occupiedBed.get("bedTagMaps");
+        assertEquals(2, bedTagMapsForOccupiedBed.size());
         assertEquals("AVAILABLE", unOccupiedBed.get("status"));
         assertEquals("307-c", unOccupiedBed.get("bedNumber"));
         assertNull(unOccupiedBed.get("patient"));
+        List<Object> bedTagMapsForUnOccupiedBed = (List<Object>) unOccupiedBed.get("bedTagMaps");
+        assertEquals(1, bedTagMapsForUnOccupiedBed.size());
     }
 
     @Test
