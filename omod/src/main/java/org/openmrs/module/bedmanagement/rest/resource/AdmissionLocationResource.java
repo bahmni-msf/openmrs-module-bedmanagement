@@ -42,7 +42,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@Resource(name = RestConstants.VERSION_1 + "/admissionLocation", supportedClass = AdmissionLocation.class, supportedOpenmrsVersions = {"1.9.*", "1.10.*", "1.11.*", "1.12.*"})
+@Resource(name = RestConstants.VERSION_1 + "/admissionLocation", supportedClass = AdmissionLocation.class, supportedOpenmrsVersions = {"1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.0.*", "2.1.*"})
 public class AdmissionLocationResource extends DelegatingCrudResource<AdmissionLocation> {
 
     @Override

@@ -14,7 +14,7 @@
 package org.openmrs.module.bedmanagement;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 
 public class HibernateBedTagMapDAO implements BedTagMapDAO {
