@@ -18,8 +18,7 @@ public class HibernateBedTagMapDAOTest extends BaseModuleContextSensitiveTest {
 
     @Before
     public void beforeAllTests() throws Exception {
-        executeDataSet("bedManagementDAOComponentTestDataset.xml");
-        executeDataSet("bedTags.xml");
+        executeDataSet("bedTagMapTestDataSet.xml");
     }
 
     @Test
@@ -42,7 +41,7 @@ public class HibernateBedTagMapDAOTest extends BaseModuleContextSensitiveTest {
     public void shouldGetBedTagByUuid() throws Exception {
         BedTag bedTag = bedTagMapDAO.getBedTagByUuid("5580cddd-c290-66c8-8d3a-96dc33d199f1");
         assertNotNull(bedTag);
-        assertEquals("oxygen", bedTag.getName());
+        assertEquals("Oxygen", bedTag.getName());
     }
 
     @Test

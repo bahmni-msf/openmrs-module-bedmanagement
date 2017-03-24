@@ -488,5 +488,24 @@
                                  referencedTableName="users"
                                  referencedColumnNames="user_id"/>
     </changeSet>
-
+    <changeSet id="bedmanagement-201703221515" author="Santhosh, Maharjun">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Get Tags'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="Get Tags"/>
+            <column name="description" value="Able to get the tags"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+    <changeSet id="bedmanagement-201703221516" author="Santhosh, Maharjun">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Edit Tags'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="Edit Tags"/>
+            <column name="description" value="Able to associate tags to the bed"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
