@@ -2,16 +2,19 @@ package org.openmrs.module.bedmanagement;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.webservices.rest.web.response.IllegalPropertyException;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-
-public class BedTagMapServiceTest extends BaseModuleContextSensitiveTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@org.springframework.test.context.ContextConfiguration(locations = {"classpath:TestingApplicationContext.xml"}, inheritLocations = true)
+public class BedTagMapServiceTest extends BaseModuleWebContextSensitiveTest {
     private String privilegedUser;
     private String privilegedUserPassword;
     private String normalUser;
