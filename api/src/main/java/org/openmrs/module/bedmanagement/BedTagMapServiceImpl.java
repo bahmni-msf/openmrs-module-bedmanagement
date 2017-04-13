@@ -56,13 +56,6 @@ public class BedTagMapServiceImpl extends BaseOpenmrsService implements BedTagMa
     }
 
     @Override
-    public Bed getBedByUuid(String bedUuid) {
-        BedManagementService bedManagementService = Context.getService(BedManagementService.class);
-        BedDetails bedDetails = bedManagementService.getBedDetailsByUuid(bedUuid);
-        return bedDetails.getBed();
-    }
-
-    @Override
     public BedTag getBedTagByUuid(String bedTagUuid) {
         return dao.getBedTagByUuid(bedTagUuid);
     }
